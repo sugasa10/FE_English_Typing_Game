@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<audio id="se" src="flash_app/static/kettei.mp3"></audio>
+<button id="restart" style="display:none; margin-top:20px;">もう一回</button>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>タイピングゲーム</title>
+<style>
+  body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+  #word { font-size: 28px; margin: 20px; }
+  #input { font-size: 24px; padding: 5px; width: 80%; }
+  #result { margin-top: 20px; font-size: 20px; }
+  #timer { font-size: 24px; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>タイピングゲーム</h1>
+<div id="timer">60</div>
+<div id="word"></div>
+<input id="input" autocomplete="off" />
+<div id="result"></div>
+
+<script>
+  const restartBtn = document.getElementById("restart");
+
+restartBtn.addEventListener("click", () => {
+  // 状態をリセット
+  correctChars = 0;
+  timeLeft = 60;
+  gameActive = true;
+  document.getElementById("result").textContent = "";
+  restartBtn.style.display = "none"; // ボタンを隠す
+  nextWord(); // 新しい単語スタート
+
+  // タイマー再開
+  const newTimer = setInterval(() => {
+    timeLeft--;
+    document.getElementById("timer").textContent = timeLeft;
+
+    if (timeLeft <= 0) {
+      clearInterval(newTimer);
+      gameActive = false;
+      document.getElementById("word").textContent = "終了";
+      document.getElementById("result").textContent =
+        "成功文字数: " + correctChars;
+      restartBtn.style.display = "inline-block"; // ボタン表示
+    }
+  }, 1000);
+});
+const text = `
+Central Processing Unit
+Graphics Processing Unit
+Reduced Instruction Set Computer
+Complex Instruction Set Computer
+Random Access Memory
+Read Only Memory
+Business Analysis Body of Knowledge
+Systems of Record
+Systems of Engagement
+Systems of Insight
+Data Flow Diagram
+Unified Modeling Language
+Data Oriented AppRoach
+Request for Information
+Request for Proposal
+Request for Quotation
+Sustainable Development Goals
+Customer Satisfaction
+Mergers and Acquisitions
+Takeover Bid
+Product Portfolio Management
+Environmental Social Governance
+Strengths Weaknesses Opportunities Threats
+Value Rarity Imitability Organization
+Customer Competitor Company
+Segmentation Tar
+User Experience
+Search Engine Optimazation
+Landing Page Optimazation
+Conversion Rate
+Mission,Vision,Values
+Key Goal Indicator
+Key Performance Indicator
+Balamced Scorecard
+Total Quality Management
+Customer Relationship Management
+Socialization,Externalization,Combination,Internalization
+Supply Chain Management
+Efficient Consumer Response
+Sales Force Automation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+Knowladge Management
+`;
+
+const words = text.split("\n").map(w => w.trim()).filter(w => w);
+
+let current = "";
+let correctChars = 0;
+let timeLeft = 60;
+let gameActive = true;
+
+function nextWord() {
+  current = words[Math.floor(Math.random() * words.length)];
+  document.getElementById("word").textContent = current;
+  document.getElementById("input").value = "";
+}
+
+// 完全一致タイピング
+document.getElementById("input").addEventListener("input", function() {
+  if (!gameActive) return;
+
+  if (this.value === current) {
+    correctChars += current.length;
+    nextWord();
+  }
+});
+
+// タイマー
+const timer = setInterval(() => {
+  timeLeft--;
+  document.getElementById("timer").textContent = timeLeft;
+
+  if (timeLeft <= 0) {
+    clearInterval(timer);
+    gameActive = false;
+    document.getElementById("word").textContent = "終了";
+    document.getElementById("result").textContent =
+      "成功文字数: " + correctChars;
+  }
+}, 1000);
+
+nextWord();
+</script>
+</body>
+</html>
