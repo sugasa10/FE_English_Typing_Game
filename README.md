@@ -1,0 +1,2 @@
+# FE_English_Typing_Game
+HTMLで完結するシンプルなタイピングゲームです。
